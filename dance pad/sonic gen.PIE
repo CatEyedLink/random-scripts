@@ -1,0 +1,114 @@
+﻿//opiste up and downs for slide
+//duoble down = brakes
+//dpad for diraction
+//tilt = left and right || or should it be blue left + blue center = left
+//drift?
+
+//1st person mod
+
+if starting then
+   var.mt = 0
+   var.rpt = 0 //right press timer
+   var.lpt = 0
+   var.boost = false
+   var.Rboost = false
+   var.Lboost = false
+   var.foot = "R"
+   var.dir = "up"
+endif
+
+if var.mt > 0 then var.mt -= 1
+if var.mt > 0 then var.rpt -= 1
+if var.mt > 0 then var.lpt -= 1
+
+if pressed(Joystick4.Button2) then
+   var.rpt = 3
+   var.Rboost = false
+endif
+if pressed(Joystick4.Button15) then
+   var.lpt = 3
+   var.Lboost = false
+endif
+
+if pressed(Joystick4.Button3) then
+   var.rpt = 3
+   var.Rboost = true
+endif
+if pressed(Joystick4.Button10) then
+   var.lpt = 3
+   var.Lboost = true
+endif
+
+if var.rpt > 0 and var.foot == "L" then
+   var.foot = "R"
+   var.mt = 20
+
+endif
+
+if var.lpt > 0 and var.foot == "R" then
+   var.foot = "L"
+   var.mt = 20
+endif
+
+if var.Lboost == true and var.Rboost == true then var.boost = true
+if var.Lboost == false and var.Rboost == false then var.boost = false
+
+if var.dir == "up" then
+   key.W = var.mt > 0
+   key.d = wiimote.roll > 30
+   key.a = wiimote.roll < -30
+   if pressed(wiimote.Minus) then var.dir = "right"
+endif
+if var.dir == "right" then
+   key.D = var.mt > 0
+   if pressed(wiimote.home) then var.dir = "up"
+endif
+ 
+key.j = var.mt > 0 and var.boost//and var.Lboost and var.Rboost //wiimote.B
+
+Key.Space = Wiimote.A
+key.Enter = wiimote.Plus
+key.l = Wiimote.B
+
+key.q = joystick4.Button13
+key.e = joystick4.Button4
+
+//var.roll = wiimote.Roll
+
+if wiimote.Roll > -10 degrees then var.atimer = 0
+//if var.atimer <= 30 degrees and wiimote.Roll != -30 degrees then Key.a = false
+
+if wiimote.Roll < 10 degrees then var.dtimer = 0
+//if var.dtimer <= 30 degrees and wiimote.Roll != 30 degrees then Key.d = false
+
+
+if wiimote.Roll < -10 degrees then
+   var.Atimer -= wiimote.Roll
+   if var.Atimer >= 30 degrees then
+  //    Key.a = true
+      //key.W = false
+      var.Atimer -= 30 degrees
+   endif
+endif
+
+if wiimote.Roll > 10 degrees then
+   var.dtimer += wiimote.Roll in degrees
+   if var.dtimer >= 30 degrees then
+  //    Key.d = true
+      //key.W = false
+      var.dtimer -= 30 degrees
+   endif
+endif
+
+
+//if pressed(wiimote.Up) then key.w = true
+//if released(wiimote.Up) then key.w = false
+
+if pressed(wiimote.left) then key.a = true
+if released(wiimote.left) then key.a = false
+
+if pressed(wiimote.right) then key.d = true
+if released(wiimote.right) then key.d = false
+
+if pressed(wiimote.down) then key.s = true
+if released(wiimote.down) then key.s = false
